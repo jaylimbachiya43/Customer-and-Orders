@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_29_073637) do
+ActiveRecord::Schema.define(version: 2024_02_09_105444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "domain_name"
+    t.date "year"
+    t.decimal "revenue"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string "name"
@@ -21,6 +31,19 @@ ActiveRecord::Schema.define(version: 2024_01_29_073637) do
     t.integer "phone"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.integer "age"
+    t.string "gender"
+    t.decimal "salary"
+    t.date "joined_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "company_id", null: false
+    t.index ["company_id"], name: "index_employees_on_company_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -31,5 +54,6 @@ ActiveRecord::Schema.define(version: 2024_01_29_073637) do
     t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
+  add_foreign_key "employees", "companies"
   add_foreign_key "orders", "customers"
 end
